@@ -1,0 +1,25 @@
+# package.json
+{
+  "name": "solcipher-hedera",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@hashgraph/sdk": "^2.x",
+    "ethers": "^5.x",
+    "web3.storage": "^4.x",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^12.x",
+    "@testing-library/jest-dom": "^5.x",
+    "jest": "^27.x"
+  }
+}

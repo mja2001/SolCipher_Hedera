@@ -1,0 +1,21 @@
+/* client/styles/globals.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+nav {
+  margin-bottom: 20px;
+}
+nav a {
+  margin-right: 10px;
+}
+button {
+  padding: 10px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+input {
+  margin: 10px 0;
+  padding: 5px;
+}

@@ -1,0 +1,8 @@
+// client/utils/ipfs.js
+import { Web3Storage } from "web3.storage";
+
+export async function uploadToIPFS(file) {
+  const client = new Web3Storage({ token: process.env.WEB3_STORAGE_TOKEN });
+  const cid = await client.put([file]);
+  return cid;
+}

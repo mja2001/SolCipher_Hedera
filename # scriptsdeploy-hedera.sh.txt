@@ -1,0 +1,5 @@
+# scripts/deploy-hedera.sh
+#!/bin/bash
+cd programs/solcipher-hedera
+npx hardhat compile
+npx hardhat deploy --network hedera_testnet

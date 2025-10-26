@@ -1,0 +1,12 @@
+// client/pages/encrypt.js
+import FileShare from "../components/FileShare";
+import Header from "../components/Header";
+
+export default function Encrypt() {
+  return (
+    <div>
+      <Header />
+      <FileShare />
+    </div>
+  );
+}

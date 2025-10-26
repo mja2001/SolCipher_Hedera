@@ -1,0 +1,4 @@
+# scripts/setup-env.sh
+#!/bin/bash
+cp .env.example .env
+echo "Please update .env with your Hedera account details and Web3.Storage token."

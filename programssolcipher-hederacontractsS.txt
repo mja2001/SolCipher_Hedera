@@ -1,0 +1,40 @@
+// programs/solcipher-hedera/contracts/SolCipherHedera.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract SolCipherHedera {
+    struct File {
+        string cid;  // IPFS or Hedera File Service CID
+        address sender;  // Sender's Hedera account
+        address recipient;  // Recipient's Hedera account
+        uint256 expiry;  // Expiry timestamp
+        bool revoked;  // Revocation status
+    }
+
+    mapping(bytes32 => File) public files;
+
+    event FileShared(bytes32 indexed fileId, string cid, address sender, address recipient, uint256 expiry);
+    event FileRevoked(bytes32 indexed fileId);
+
+    function shareFile(string memory cid, address recipient, uint256 expiry) public {
+        bytes32 fileId = keccak256(abi.encodePacked(cid, msg.sender, block.timestamp));
+        files[fileId] = File(cid, msg.sender, recipient, expiry, false);
+        emit FileShared(fileId, cid, msg.sender, recipient, expiry);
+    }
+
+    function revokeFile(bytes32 fileId) public {
+        require(files[fileId].sender == msg.sender, "Only sender can revoke");
+        require(!files[fileId].revoked, "File already revoked");
+        files[fileId].revoked = true;
+        emit FileRevoked(fileId);
+    }
+
+    function getFile(bytes32 fileId) public view returns (File memory) {
+        File memory file = files[fileId];
+        require(file.recipient != address(0), "File does not exist");
+        require(!file.revoked, "File revoked");
+        require(block.timestamp <= file.expiry, "File expired");
+        require(msg.sender == file.recipient || msg.sender == file.sender, "Unauthorized");
+        return file;
+    }
+}

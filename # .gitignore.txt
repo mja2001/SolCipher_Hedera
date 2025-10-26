@@ -1,0 +1,10 @@
+# .gitignore
+node_modules
+.env
+coverage
+coverage.json
+cache*
+artifacts*
+/programs/solcipher-hedera/artifacts
+/programs/solcipher-hedera/cache
+hardhat.config.js

@@ -1,0 +1,17 @@
+// client/components/Header.js
+import { useContext } from "react";
+import { WalletContext } from "./WalletProvider";
+import Link from "next/link";
+
+const Header = () => {
+  const { wallet, connectWallet } = useContext(WalletContext);
+
+  return (
+    <nav>
+      <Link  href ="/">Home</Link> | <Link  href ="/encrypt">Share File</Link> | <Link  href ="/view">View File</Link>
+      <button  onClick ={connectWallet}>{wallet ? "Wallet Connected" : "Connect Wallet"}</button>
+    </nav>
+  );
+};
+
+export default Header;

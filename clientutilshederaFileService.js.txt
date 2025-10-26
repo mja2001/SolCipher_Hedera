@@ -1,0 +1,25 @@
+// client/utils/hederaFileService.js
+import { FileCreateTransaction, TopicCreateTransaction, TopicMessageSubmitTransaction } from "@hashgraph/sdk";
+
+export async function storeFileHash(client, cid) {
+  try {
+    const transaction = await new FileCreateTransaction()
+      .setContents(Buffer.from(cid))
+      .setKeys([client.operatorPublicKey])
+      .execute(client);
+    const receipt = await transaction.getReceipt(client);
+    return receipt.fileId.toString();
+  } catch (error) {
+    console.error("Failed to store file hash:", error);
+    throw error;
+  }
+}
+
+export async function logShare(client, fileId, expiry) {
+  const topicTransaction = await new TopicCreateTransaction().execute(client);
+  const topicId = (await topicTransaction.getReceipt(client)).topicId;
+  await new TopicMessageSubmitTransaction()
+    .setTopicId(topicId)
+    .setMessage(JSON.stringify({ fileId, expiry, timestamp: Date.now() }))
+    .execute(client);
+}

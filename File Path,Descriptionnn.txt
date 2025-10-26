@@ -1,0 +1,3 @@
+File Path,Description
+scripts/deploy-hedera.sh,Shell script to compile the contract and deploy it to Hedera Testnet using Hardhat.
+scripts/setup-env.sh,Shell script to copy the .env.example to .env.

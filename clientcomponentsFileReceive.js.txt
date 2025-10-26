@@ -1,0 +1,63 @@
+// client/components/FileReceive.js
+import { useState, useContext } from "react";
+import { WalletContext } from "./WalletProvider";
+import { decryptFile } from "../utils/encryption";
+import { ethers } from "ethers";
+
+const FileReceive = () => {
+  const { wallet, provider } = useContext(WalletContext);
+  const [fileId, setFileId] = useState("");
+  const [status, setStatus] = useState("");
+
+  const handleRetrieve = async () => {
+    if (!wallet || !provider || !fileId) {
+      setStatus("Connect wallet and enter file ID.");
+      return;
+    }
+
+    try {
+      setStatus("Retrieving file...");
+      const contract = new ethers.Contract(
+        process.env.CONTRACT_ADDRESS,
+        ["function getFile(bytes32 fileId) view returns (string cid, address sender, address recipient, uint256 expiry, bool revoked)"],
+        provider
+      );
+
+      const file = await contract.getFile(fileId);
+      const response = await fetch(`https://ipfs.io/ipfs/${file.cid}`);
+      const encryptedData = await response.arrayBuffer();
+
+      const key = new Uint8Array(32);  // Placeholder - **NOTE: Key retrieval logic is missing**
+      const iv = new Uint8Array(12);  // Placeholder - **NOTE: IV retrieval logic is missing**
+      
+      const decrypted = await decryptFile(encryptedData, key, iv);
+      
+      const url = URL.createObjectURL(decrypted);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "decrypted_file";
+      a.click();
+      URL.revokeObjectURL(url);
+
+      setStatus("File retrieved and decrypted!");
+    } catch (error) {
+      setStatus(`Error: ${error.message}`);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Retrieve a File</h2>
+      <input
+        type ="text"
+        placeholder ="File ID (bytes32)"
+        value ={fileId}
+        onChange ={(e) => setFileId(e.target.value)}
+      />
+      <button  onClick ={handleRetrieve}>Retrieve</button>
+      <p>{status}</p>
+    </div>
+  );
+};
+
+export default FileReceive;

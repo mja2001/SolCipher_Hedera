@@ -1,0 +1,41 @@
+// client/utils/encryption.js
+export async function encryptFile(file, key) {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const algorithm = { name: "AES-GCM", iv };
+
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw",
+    key,
+    "AES-GCM",
+    false,
+    ["encrypt"]
+  );
+
+  const encrypted = await crypto.subtle.encrypt(
+    algorithm,
+    cryptoKey,
+    await file.arrayBuffer()
+  );
+
+  return { encrypted: new Uint8Array(encrypted), iv };
+}
+
+export async function decryptFile(encryptedData, key, iv) {
+  const algorithm = { name: "AES-GCM", iv };
+
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw",
+    key,
+    "AES-GCM",
+    false,
+    ["decrypt"]
+  );
+
+  const decrypted = await crypto.subtle.decrypt(
+    algorithm,
+    cryptoKey,
+    encryptedData
+  );
+
+  return new Blob([decrypted]);
+}

@@ -1,0 +1,13 @@
+// client/pages/index.js
+import Header from "../components/Header";
+
+export default function Home() {
+  return (
+    <div>
+      <Header />
+      <h1>SolCipher on Hedera</h1>
+      <p>Securely share files using Hedera File Service and IPFS.</p>
+      <a  href ="/encrypt">Share a File</a> | <a  href ="/view">View a File</a>
+    </div>
+  );
+}

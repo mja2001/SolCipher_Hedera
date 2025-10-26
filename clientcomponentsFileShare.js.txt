@@ -1,0 +1,71 @@
+// client/components/FileShare.js
+import { useState, useContext } from "react";
+import { WalletContext } from "./WalletProvider";
+import { encryptFile } from "../utils/encryption";
+import { uploadToIPFS } from "../utils/ipfs";
+import { storeFileHash, logShare } from "../utils/hederaFileService";
+import { ethers } from "ethers";
+
+const FileShare = () => {
+  const { wallet, provider } = useContext(WalletContext);
+  const [file, setFile] = useState(null);
+  const [recipient, setRecipient] = useState("");
+  const [expiryDays, setExpiryDays] = useState(7);
+  const [status, setStatus] = useState("");
+
+  const handleUpload = async () => {
+    if (!wallet || !provider || !file || !recipient) {
+      setStatus("Connect wallet, select a file, and enter recipient address.");
+      return;
+    }
+
+    try {
+      setStatus("Encrypting and uploading...");
+      const key = crypto.getRandomValues(new Uint8Array(32));
+      const { encrypted, iv } = await encryptFile(file, key);
+      const encryptedFile = new File([encrypted], file.name);
+
+      const cid = await uploadToIPFS(encryptedFile);
+      const fileId = await storeFileHash(wallet, cid);
+
+      const contract = new ethers.Contract(
+        process.env.CONTRACT_ADDRESS,
+        ["function shareFile(string cid, address recipient, uint256 expiry)"],
+        provider.getSigner()
+      );
+
+      const expiry = Math.floor(Date.now() / 1000) + expiryDays * 24 * 60 * 60;
+      await contract.shareFile(cid, recipient, expiry);
+
+      const fileIdHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(cid + recipient + Date.now()));
+      await logShare(wallet, fileIdHash, expiry);
+
+      setStatus(`File shared! CID: ${cid}, File ID: ${fileId}`);
+    } catch (error) {
+      setStatus(`Error: ${error.message}`);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Share a File</h2>
+      <input  type ="file"  onChange ={(e) => setFile(e.target.files[0])} />
+      <input
+        type ="text"
+        placeholder ="Recipient Hedera Address (0x...)"
+        value ={recipient}
+        onChange ={(e) => setRecipient(e.target.value)}
+      />
+      <input
+        type ="number"
+        placeholder ="Expiry (days)"
+        value ={expiryDays}
+        onChange ={(e) => setExpiryDays(e.target.value)}
+      />
+      <button  onClick ={handleUpload}>Upload</button>
+      <p>{status}</p>
+    </div>
+  );
+};
+
+export default FileShare;

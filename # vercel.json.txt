@@ -1,0 +1,10 @@
+# vercel.json
+{
+  "rewrites": [
+    { "source": "/encrypt/:path*", "destination": "https://hedera.solcipher.online/:path*" },
+    { "source": "/share/:path*", "destination": "https://hedera.solcipher.cloud/:path*" }
+  ],
+  "redirects": [
+    { "source": "/services", "destination": "/encrypt", "permanent": true }
+  ]
+}

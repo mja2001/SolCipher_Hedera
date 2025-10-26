@@ -1,0 +1,12 @@
+// client/pages/view.js
+import FileReceive from "../components/FileReceive";
+import Header from "../components/Header";
+
+export default function View() {
+  return (
+    <div>
+      <Header />
+      <FileReceive />
+    </div>
+  );
+}

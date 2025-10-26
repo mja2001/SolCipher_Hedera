@@ -1,0 +1,7 @@
+File Path,Description
+README.md,Project overview and summary.
+LICENSE,"The project uses the MIT License, as indicated in the Solidity contract."
+.gitignore,Specifies files and directories that Git should ignore.
+vercel.json,Configuration for Vercel deployment.
+.env.example,Template for environment variables.
+package.json,Root-level dependencies and scripts for the Next.js client.

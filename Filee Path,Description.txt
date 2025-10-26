@@ -1,0 +1,5 @@
+File Path,Description
+programs/solcipher-hedera/contracts/SolCipherHedera.sol,The main smart contract for access control on Hedera.
+programs/solcipher-hedera/Hardhat.config.js,Hardhat configuration for deploying to Hedera Testnet and Mainnet.
+programs/solcipher-hedera/scripts/deploy.js,Script for deploying the smart contract.
+programs/solcipher-hedera/test/SolCipherHedera.test.js,Test file for the smart contract.

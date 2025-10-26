@@ -1,0 +1,13 @@
+# Initialize the project directory
+mkdir SolCipher
+cd SolCipher
+git init
+
+# Create the main directory structure
+mkdir -p client/{components,pages,utils,styles,public/images}
+mkdir -p programs/solcipher-hedera/{contracts,scripts,test}
+mkdir scripts tests
+
+# Create empty files for easy content insertion
+touch README.md LICENSE .gitignore vercel.json .env.example package.json
+touch programs/solcipher-hedera/Hardhat.config.js

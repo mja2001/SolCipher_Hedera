@@ -1,0 +1,12 @@
+File Path,Description
+client/components/WalletProvider.js,React Context for managing the Hedera client and Ethers provider.
+client/components/FileShare.js,"React component for encrypting, uploading to IPFS, and sharing a file via the smart contract."
+client/components/FileReceive.js,"React component for checking file access via the smart contract, retrieving from IPFS, and decrypting."
+client/components/Header.js,Navigation and wallet connection button.
+client/pages/index.js,The main landing page.
+client/pages/encrypt.js,Page to host the FileShare component.
+client/pages/view.js,Page to host the FileReceive component.
+client/utils/encryption.js,Helper functions for client-side AES-256-GCM encryption and decryption.
+client/utils/ipfs.js,Helper function for uploading files to IPFS using Web3.Storage.
+client/utils/hederaFileService.js,Helper functions for storing file hashes and logging shares on Hedera File Service/Consensus Service.
+client/styles/globals.css,Basic global CSS styles.

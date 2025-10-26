@@ -1,0 +1,51 @@
+// programs/solcipher-hedera/test/SolCipherHedera.test.js
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
+
+describe("SolCipherHedera", function () {
+  let contract, owner, recipient;
+
+  beforeEach(async () => {
+    const SolCipherHedera = await ethers.getContractFactory("SolCipherHedera");
+    [owner, recipient] = await ethers.getSigners();
+    contract = await SolCipherHedera.deploy();
+    await contract.deployed();
+  });
+
+  it("should share a file", async () => {
+    const cid = "QmTestCID";
+    const expiry = Math.floor(Date.now() / 1000) + 3600;
+
+    await expect(contract.shareFile(cid, recipient.address, expiry))
+      .to.emit(contract, "FileShared")
+      .withArgs(
+        ethers.utils.keccak256(
+          ethers.utils.defaultAbiCoder.encode(
+            ["string", "address", "uint256"],
+            [cid, owner.address, await ethers.provider.getBlock("latest").timestamp]
+          )
+        ),
+        cid,
+        owner.address,
+        recipient.address,
+        expiry
+      );
+  });
+
+  it("should revoke a file", async () => {
+    const cid = "QmTestCID";
+    const expiry = Math.floor(Date.now() / 1000) + 3600;
+    await contract.shareFile(cid, recipient.address, expiry);
+
+    const fileId = ethers.utils.keccak256(
+      ethers.utils.defaultAbiCoder.encode(
+        ["string", "address", "uint256"],
+        [cid, owner.address, await ethers.provider.getBlock("latest").timestamp]
+      )
+    );
+
+    await expect(contract.revokeFile(fileId))
+      .to.emit(contract, "FileRevoked")
+      .withArgs(fileId);
+  });
+});
