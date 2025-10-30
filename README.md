@@ -27,7 +27,7 @@ In this hackathon, we're showcasing not just innovation but resilience: A recent
 
 ## Resources
 - **Pentest Certification Report**: [View Report](https://drive.google.com/file/d/1FGb7xPXva32vTgYjCCIiNubsH8jTFWsK/view)
-- **Hackathon Presentation**: [View Presentation](https://docs.google.com/presentation/d/1CNKVFEhwk7ooPx9kprNUOg6kJoIYN7H-/edit?slide=id.p1#slide=id.p1)
+- **Hackathon Presentation**: [View Presentation] (https://docs.google.com/presentation/d/1CNKVFEhwk7ooPx9kprNUOg6kJoIYN7H-/edit?usp=sharing&ouid=117607423948254072095&rtpof=true&sd=true)
 
 ## Installation
 1. Clone: `git clone https://github.com/your-username/solcipher-hedera.git`
